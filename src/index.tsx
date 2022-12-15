@@ -6,12 +6,13 @@ import App from "./App";
 import { Cart, ErrorPage, Header, Footer, ProductDetails } from "./views/";
 import "./styles/normalize.css";
 import "./index.scss";
+import StoreProvider from "./providers/StoreProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  <StoreProvider>
     <Header />
     <BrowserRouter>
       <Routes>
@@ -22,7 +23,7 @@ root.render(
       </Routes>
     </BrowserRouter>
     <Footer />
-  </React.StrictMode>
+  </StoreProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
