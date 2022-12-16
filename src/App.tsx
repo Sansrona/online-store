@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
 import Api from "./api/";
@@ -10,19 +10,26 @@ import "./App.scss";
 import { useStore } from "./providers/StoreProvider";
 
 const App: React.FC = observer(() => {
+  let [searchParams, setSearchParams] = useSearchParams();
   const { productsStore } = useStore();
-  const { products, categories, brands } = productsStore;
+  const {
+    allProducts: products,
+    categories,
+    brands,
+    filterProducts,
+  } = productsStore;
   const query = useQueryFilter();
   const [filters, setFilters] = React.useState<Filters>({
     category: [],
     brand: [],
+    stock: [],
+    price: [],
   });
 
   const onCategoryFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let categoryValues = filters.category;
+    let categoryValues = filters.category!;
     if (e.target.checked) {
       categoryValues.push(e.target.value);
-      query.append("category", e.currentTarget.value);
       setFilters({ ...filters, category: categoryValues });
     } else {
       let newCategories = categoryValues.filter((x) => x !== e.target.value);
@@ -30,10 +37,25 @@ const App: React.FC = observer(() => {
     }
   };
 
+  const onBrandFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let brandValues = filters.brand!;
+    if (e.target.checked) {
+      brandValues.push(e.target.value);
+      setFilters({ ...filters, brand: brandValues });
+    } else {
+      let newBrands = brandValues.filter((x) => x !== e.target.value);
+      setFilters({ ...filters, brand: newBrands });
+    }
+  };
+
   React.useEffect(() => {
     productsStore.getAllProducts();
-    console.log(query);
+    // console.log(query);
   }, []);
+
+  React.useEffect(() => {
+    filterProducts(filters);
+  }, [filters]);
 
   return (
     <div className="App">
@@ -64,7 +86,7 @@ const App: React.FC = observer(() => {
                 name="category"
                 id={brand}
                 value={brand}
-                onChange={onCategoryFilterChange}
+                onChange={onBrandFilterChange}
               />
               <label htmlFor={brand}>{brand}</label>
             </div>

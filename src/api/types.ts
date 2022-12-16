@@ -13,8 +13,10 @@ export interface Product {
 }
 
 export type Filters = {
-    brand: string[];
-    category: string[];
+    brand?: string[];
+    category?: string[];
+    stock?: number[];
+    price?: number[];
 };
 
 export interface Products {
