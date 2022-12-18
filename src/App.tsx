@@ -1,8 +1,7 @@
 import React from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, createSearchParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
-import Api from "./api/";
 import { Filters, Product } from "./api/types";
 import { useQueryFilter } from "./utils/QueryFilter";
 
@@ -48,13 +47,27 @@ const App: React.FC = observer(() => {
     }
   };
 
+  const setParams = () => {
+    for (let key in filters) {
+      if (
+        filters[key as keyof Filters] &&
+        filters[key as keyof Filters]!.length > 0
+      ) {
+        searchParams.set(key, filters[key as keyof Filters]?.join("↕")! || "");
+      }
+    }
+    // console.log(searchParams);
+    setSearchParams(searchParams);
+  };
+
   React.useEffect(() => {
     productsStore.getAllProducts();
-    // console.log(query);
+    // console.log(searchParams);
   }, []);
 
   React.useEffect(() => {
     filterProducts(filters);
+    // setParams();
   }, [filters]);
 
   return (
@@ -85,7 +98,7 @@ const App: React.FC = observer(() => {
                 type="checkbox"
                 name="category"
                 id={brand}
-                value={brand}
+                value={brand.toLowerCase()}
                 onChange={onBrandFilterChange}
               />
               <label htmlFor={brand}>{brand}</label>
