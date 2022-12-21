@@ -7,22 +7,27 @@ import {
   useRef,
 } from "react";
 import classnames from "classnames";
-import "./StockFilter.scss";
+import "./PriceFilter.scss";
 
 interface MultiRangeSliderProps {
   min: number;
   max: number;
   onChange: Function;
-  currentStockValues: number[]
+  currentPriceValues: number[];
 }
 
-const StockFilter: FC<MultiRangeSliderProps> = ({ min, max, onChange, currentStockValues }) => {
-  const [minVal, setMinVal] = useState(currentStockValues[0]);
-  const [maxVal, setMaxVal] = useState(currentStockValues[1]);
+const PriceFilter: FC<MultiRangeSliderProps> = ({
+  min,
+  max,
+  onChange,
+  currentPriceValues,
+}) => {
+  const [minVal, setMinVal] = useState(currentPriceValues[0]);
+  const [maxVal, setMaxVal] = useState(currentPriceValues[1]);
   const minValRef = useRef<HTMLInputElement>(null);
   const maxValRef = useRef<HTMLInputElement>(null);
   const range = useRef<HTMLDivElement>(null);
-
+  
   // Convert to percentage
   const getPercent = useCallback(
     (value: number) => Math.round(((value - min) / (max - min)) * 100),
@@ -34,6 +39,7 @@ const StockFilter: FC<MultiRangeSliderProps> = ({ min, max, onChange, currentSto
     if (maxValRef.current) {
       const minPercent = getPercent(minVal);
       const maxPercent = getPercent(+maxValRef.current.value); // Precede with '+' to convert the value from type string to type number
+
       if (range.current) {
         range.current.style.left = `${minPercent}%`;
         range.current.style.width = `${maxPercent - minPercent}%`;
@@ -53,23 +59,18 @@ const StockFilter: FC<MultiRangeSliderProps> = ({ min, max, onChange, currentSto
     }
   }, [maxVal, getPercent]);
 
-  // Get min and max values when their state changes
-  useEffect(() => {
-    onChange({ min: minVal, max: maxVal });
-  }, [minVal, maxVal]);
-
   return (
-    <div className="container__stock">
+    <div className="container__price">
       <input
         type="range"
         min={min}
         max={max}
-        value={currentStockValues[0]}
+        value={currentPriceValues[0]}
         ref={minValRef}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          const value = Math.min(+event.target.value, maxVal - 1);
+          const value = +event.target.value;
           setMinVal(value);
-          event.target.value = value.toString();
+          onChange({ min: minVal, max: maxVal });
         }}
         className={classnames("thumb thumb--zindex-3", {
           "thumb--zindex-5": minVal > max - 100,
@@ -79,12 +80,13 @@ const StockFilter: FC<MultiRangeSliderProps> = ({ min, max, onChange, currentSto
         type="range"
         min={min}
         max={max}
-        value={currentStockValues[1]}
+        value={currentPriceValues[1]}
         ref={maxValRef}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          const value = Math.max(+event.target.value, minVal + 1);
+          const value = +event.target.value;
           setMaxVal(value);
-          event.target.value = value.toString();
+          onChange({ min: minVal, max: maxVal });
+          // event.target.value = value.toString();
         }}
         className="thumb thumb--zindex-4"
       />
@@ -92,11 +94,26 @@ const StockFilter: FC<MultiRangeSliderProps> = ({ min, max, onChange, currentSto
       <div className="slider">
         <div className="slider__track"></div>
         <div ref={range} className="slider__range"></div>
-        <div className="slider__left-value">{currentStockValues[0]}</div>
-        <div className="slider__right-value">{currentStockValues[1]}</div>
+
+        <div>
+          <div className="slider__left-value">
+            {currentPriceValues[0] !== Number.POSITIVE_INFINITY ? (
+              currentPriceValues[0]
+            ) : (
+              <p>No products</p>
+            )}
+          </div>
+          <div className="slider__right-value">
+            {currentPriceValues[0] !== Number.POSITIVE_INFINITY ? (
+              currentPriceValues[1]
+            ) : (
+              <p>No products</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default StockFilter;
+export default PriceFilter;

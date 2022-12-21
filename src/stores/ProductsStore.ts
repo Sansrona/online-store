@@ -23,22 +23,26 @@ class Products {
           for (let crit of criterias) {
             if (crit["field"] === "category" || crit["field"] === "brand") {
               let curItem: string = item[crit["field"] as "brand" | "category"];
+
               let curValues: string[] = crit["values"] as string[];
-              if (curValues && curValues.includes(curItem)) {
+              if (curValues && curValues.includes(curItem.toLowerCase())) {
                 counter++;
               }
             }
             if (crit["field"] === "stock" || crit["field"] === "price") {
               let curItem = item[crit["field"] as "stock" | "price"];
+
               if (
                 crit["values"] &&
+                crit["values"].length &&
                 curItem >= crit["values"][0] &&
                 curItem <= crit["values"][1]
               ) {
-                counter += 1;
+                counter++;
               }
             }
           }
+
           return counter === criterias.length;
         };
 
@@ -59,7 +63,7 @@ class Products {
         }
       }
       const resArr = filterNew(newFilters);
-
+      
       return resArr;
     }
     return this.products;
@@ -67,12 +71,14 @@ class Products {
 
   get categories() {
     return Array.from(
-      new Set(this.products.map((product) => product.category))
+      new Set(this.products.map((product) => product.category.toLowerCase()))
     );
   }
 
   get brands() {
-    return Array.from(new Set(this.products.map((product) => product.brand)));
+    return Array.from(
+      new Set(this.products.map((product) => product.brand.toLowerCase()))
+    );
   }
 
   get stockValues() {
@@ -82,13 +88,12 @@ class Products {
     ];
   }
 
-  get currentStockValues() {
-    console.log(this.allProducts);
-    
-    return [
-      Math.min(...this.allProducts.map((product) => product.stock)),
-      Math.max(...this.allProducts.map((product) => product.stock)),
-    ];
+  get currentStockValues() {   
+      return [
+        Math.min(...this.allProducts.map((product) => product.stock)),
+        Math.max(...this.allProducts.map((product) => product.stock)),
+      ];
+      
   }
 
   get priceValues() {
@@ -99,10 +104,11 @@ class Products {
   }
 
   get currentPriceValues() {
-    return [
-      Math.min(...this.allProducts.map((product) => product.price)),
-      Math.max(...this.allProducts.map((product) => product.price)),
-    ];
+      return [
+        Math.min(...this.allProducts.map((product) => product.price)),
+        Math.max(...this.allProducts.map((product) => product.price)),
+      ];
+    
   }
 
   getAllProducts() {
@@ -115,41 +121,9 @@ class Products {
       .catch(action((err) => console.log(err)));
   }
 
-  filterProducts = (filterOptions: Filters) => {
-    this.filters = filterOptions;
+  filterProducts = (filterOptions: Filters) => {    
+        this.filters = filterOptions;
   };
 }
 
 export default new Products();
-
-// if (this.filters) {
-//   let filtered: Product[] = this.products;
-//   let filteredArr: Product[] = [];
-//   for (let key in this.filters) {
-//     let newArr: Product[] = [];
-//     for (let option of this.filters[key as keyof Filters]!) {
-//       newArr = [
-//         ...newArr,
-//         ...filtered.filter(
-//           (product) => product[key as keyof Product] === option
-//         ),
-//       ];
-//       console.log(newArr, '2');
-
-//     }
-//     filteredArr = [...filteredArr, ...newArr];
-
-//     filtered = Array.from(filteredArr);
-//   }
-//   console.log(filtered, "filtered2");
-
-//   let resArr: Product[]= [];
-//   filtered.forEach((product, _, self) => {
-//     if(self.indexOf(product) === self.lastIndexOf(product)){
-//       resArr.push(product);
-//     }
-//   })
-//   console.log(resArr, "resArr");
-
-//   return resArr;
-// }

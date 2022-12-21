@@ -7,27 +7,27 @@ import {
   useRef,
 } from "react";
 import classnames from "classnames";
-import "./PriceFilter.scss";
+import "./StockFilter.scss";
 
 interface MultiRangeSliderProps {
   min: number;
   max: number;
   onChange: Function;
-  currentPriceValues: number[];
+  currentStockValues: number[];
 }
 
-const PriceFilter: FC<MultiRangeSliderProps> = ({
+const StockFilter: FC<MultiRangeSliderProps> = ({
   min,
   max,
   onChange,
-  currentPriceValues,
+  currentStockValues,
 }) => {
-  const [minVal, setMinVal] = useState(currentPriceValues[0]);
-  const [maxVal, setMaxVal] = useState(currentPriceValues[1]);
+  const [minVal, setMinVal] = useState(currentStockValues[0]);
+  const [maxVal, setMaxVal] = useState(currentStockValues[1]);
   const minValRef = useRef<HTMLInputElement>(null);
   const maxValRef = useRef<HTMLInputElement>(null);
   const range = useRef<HTMLDivElement>(null);
-
+ 
   // Convert to percentage
   const getPercent = useCallback(
     (value: number) => Math.round(((value - min) / (max - min)) * 100),
@@ -39,7 +39,6 @@ const PriceFilter: FC<MultiRangeSliderProps> = ({
     if (maxValRef.current) {
       const minPercent = getPercent(minVal);
       const maxPercent = getPercent(+maxValRef.current.value); // Precede with '+' to convert the value from type string to type number
-
       if (range.current) {
         range.current.style.left = `${minPercent}%`;
         range.current.style.width = `${maxPercent - minPercent}%`;
@@ -59,23 +58,18 @@ const PriceFilter: FC<MultiRangeSliderProps> = ({
     }
   }, [maxVal, getPercent]);
 
-  // Get min and max values when their state changes
-  useEffect(() => {
-    onChange({ min: minVal, max: maxVal });
-  }, [minVal, maxVal]);
-
   return (
-    <div className="container__price">
+    <div className="container__stock">
       <input
         type="range"
         min={min}
         max={max}
-        value={currentPriceValues[0]}
+        value={currentStockValues[0]}
         ref={minValRef}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          const value = Math.min(+event.target.value, maxVal - 1);
+          const value = +event.target.value;
           setMinVal(value);
-          event.target.value = value.toString();
+          onChange({ min: minVal, max: maxVal });
         }}
         className={classnames("thumb thumb--zindex-3", {
           "thumb--zindex-5": minVal > max - 100,
@@ -85,12 +79,12 @@ const PriceFilter: FC<MultiRangeSliderProps> = ({
         type="range"
         min={min}
         max={max}
-        value={currentPriceValues[1]}
+        value={currentStockValues[1]}
         ref={maxValRef}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          const value = Math.max(+event.target.value, minVal + 1);
+          const value = +event.target.value;
           setMaxVal(value);
-          event.target.value = value.toString();
+          onChange({ min: minVal, max: maxVal });
         }}
         className="thumb thumb--zindex-4"
       />
@@ -98,11 +92,25 @@ const PriceFilter: FC<MultiRangeSliderProps> = ({
       <div className="slider">
         <div className="slider__track"></div>
         <div ref={range} className="slider__range"></div>
-        <div className="slider__left-value">{currentPriceValues[0]}</div>
-        <div className="slider__right-value">{currentPriceValues[1]}</div>
+        <div>
+          <div className="slider__left-value">
+            {currentStockValues[0] !== Number.POSITIVE_INFINITY ? (
+              currentStockValues[0]
+            ) : (
+              <p>No products</p>
+            )}
+          </div>
+          <div className="slider__right-value">
+            {currentStockValues[0] !== Number.POSITIVE_INFINITY ? (
+              currentStockValues[1]
+            ) : (
+              <p>No products</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default PriceFilter;
+export default StockFilter;

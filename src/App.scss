@@ -1,5 +1,8 @@
 @import "./styles/_variables.scss";
-
+p{
+  margin: 0;
+  padding: 0;
+}
 .App {
   background-color: $main-color;
 }
