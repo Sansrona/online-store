@@ -1,13 +1,14 @@
 import { makeAutoObservable, action } from "mobx";
 
 import Api from "../api";
-import { Filters, Product } from "../api/types";
+import { Filters, Product, SortTypes } from "../api/types";
 
 type storeProducts = Product[] | [];
 
 class Products {
   products: storeProducts = [];
   filters: Filters | null = null;
+  sortOption: SortTypes = "default" as SortTypes;
   constructor() {
     makeAutoObservable(this);
   }
@@ -63,10 +64,10 @@ class Products {
         }
       }
       const resArr = filterNew(newFilters);
-      
-      return resArr;
+
+      return this.sortProducts(resArr);
     }
-    return this.products;
+    return this.sortProducts(this.products);
   }
 
   get categories() {
@@ -88,12 +89,11 @@ class Products {
     ];
   }
 
-  get currentStockValues() {   
-      return [
-        Math.min(...this.allProducts.map((product) => product.stock)),
-        Math.max(...this.allProducts.map((product) => product.stock)),
-      ];
-      
+  get currentStockValues() {
+    return [
+      Math.min(...this.allProducts.map((product) => product.stock)),
+      Math.max(...this.allProducts.map((product) => product.stock)),
+    ];
   }
 
   get priceValues() {
@@ -104,11 +104,10 @@ class Products {
   }
 
   get currentPriceValues() {
-      return [
-        Math.min(...this.allProducts.map((product) => product.price)),
-        Math.max(...this.allProducts.map((product) => product.price)),
-      ];
-    
+    return [
+      Math.min(...this.allProducts.map((product) => product.price)),
+      Math.max(...this.allProducts.map((product) => product.price)),
+    ];
   }
 
   getAllProducts() {
@@ -121,8 +120,41 @@ class Products {
       .catch(action((err) => console.log(err)));
   }
 
-  filterProducts = (filterOptions: Filters) => {    
-        this.filters = filterOptions;
+  filterProducts = (filterOptions: Filters) => {
+    this.filters = filterOptions;
+  };
+
+  setSort = (sortOption: SortTypes): void => {
+    this.sortOption = sortOption;
+  };
+
+  sortProducts = (products: Product[]): Product[] => {
+    switch (this.sortOption) {
+      case SortTypes.priceASC: {
+        return products.sort((a, b) => a.price - b.price);
+      }
+      case SortTypes.priceDESC: {
+        return products.sort((a, b) => b.price - a.price);
+      }
+      case SortTypes.ratingASC: {
+        return products.sort((a, b) => a.rating - b.rating);
+      }
+      case SortTypes.ratingDESC: {
+        return products.sort((a, b) => b.rating - a.rating);
+      }
+      case SortTypes.discountASC: {
+        return products.sort(
+          (a, b) => a.discountPercentage - b.discountPercentage
+        );
+      }
+      case SortTypes.discountDESC: {
+        return products.sort(
+          (a, b) => b.discountPercentage - a.discountPercentage
+        );
+      }
+      default:
+        return products;
+    }
   };
 }
 

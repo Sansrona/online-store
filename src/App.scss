@@ -3,6 +3,8 @@ p{
   margin: 0;
   padding: 0;
 }
-.App {
+.container {
   background-color: $main-color;
+  display: flex;
 }
+

@@ -97,16 +97,16 @@ const Sidebar = observer(() => {
   );
 
   const getFilterFromQuery = () => {
-    let queryParams = Object.fromEntries([...searchParams]);
+    let queryParams = Object.fromEntries([...searchParams]);    
     let filtration: Filters = {};
     for (let key in queryParams) {
       if (key === "category" || key === "brand") {
         filtration[key as "brand" | "category"] = queryParams[key].split("↕");
-      } else {
+      } else if (key === "stock" || key === "price") {
         filtration[key as "price" | "stock"] = queryParams[key]
           .split("↕")
           .map((value) => +value);
-      }
+      } else {}
     }
     return filtration;
   };

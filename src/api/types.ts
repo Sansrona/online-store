@@ -25,3 +25,13 @@ export interface Products {
   skip: number;
   limit: number;
 }
+
+export enum SortTypes {
+  ratingASC = "rating-ASC",
+  ratingDESC = "rating-DESC",
+  priceASC = "price-ASC",
+  priceDESC = "price-DESC",
+  discountASC = "discount-ASC",
+  discountDESC = "discount-DESC",
+  default = ''
+}

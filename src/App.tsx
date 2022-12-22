@@ -8,16 +8,16 @@ import Products from "./components/Products";
 
 const App: React.FC = observer(() => {
   const { productsStore } = useStore();
-  const { allProducts: products } = productsStore;
+  const { allProducts: products, setSort } = productsStore;
 
   React.useEffect(() => {
     productsStore.getAllProducts();
   }, []);
 
   return (
-    <div className="App">
+    <div className="container">
       <Sidebar />
-      <Products products={products} />
+      <Products products={products} sort={setSort} />
     </div>
   );
 });
