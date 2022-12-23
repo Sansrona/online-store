@@ -19,13 +19,6 @@ const CategoryFilter: React.FC<CategoryFilterTypes> = ({
     }
   }, []);
 
-  const onCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.checked);
-    
-    e.target.checked = !e.target.checked;
-    onCategoryFilterChange(e);
-  }
-
   return (
     <form>
       <p>Category</p>

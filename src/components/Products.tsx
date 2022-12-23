@@ -21,15 +21,10 @@ const Products: React.FC<ProductsPageType> = ({
   sort: onSortChange,
 }) => {
   let [searchParams, setSearchParams] = useSearchParams();
-  const [sortOption, setSortOption] = useState(searchParams.get("sort")||"default");
+  const [sortOption, setSortOption] = useState(
+    searchParams.get("sort") || "default"
+  );
 
-  useEffect(() => {
-    let querySort = searchParams.get("sort");
-    if (querySort) {
-      setSortOption(querySort);
-    }
-    console.log(querySort, sortOption);
-  }, []);
   useEffect(() => {
     onSortChange(sortOption as SortTypes);
     searchParams.set("sort", sortOption);

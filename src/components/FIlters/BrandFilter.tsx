@@ -26,7 +26,7 @@ const BrandFilter: React.FC<BrandFilterTypes> = ({
           <div key={brand}>
             <input
               type="checkbox"
-              name="category"
+              name="brand"
               id={brand}
               defaultChecked={brandParams.includes(brand.toLowerCase())}
               value={brand.toLowerCase()}

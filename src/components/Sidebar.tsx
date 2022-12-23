@@ -66,6 +66,7 @@ const Sidebar = observer(() => {
         searchParams.set(key, filters[key as keyof Filters]?.join("↕")! || "");
       }
     }
+
     setSearchParams(searchParams);
   };
 
@@ -76,7 +77,7 @@ const Sidebar = observer(() => {
         max !== Number.NEGATIVE_INFINITY
       ) {
         let arr = [min, max];
-        let stock = [Math.min(...arr), Math.max(...arr)]
+        let stock = [Math.min(...arr), Math.max(...arr)];
         setFilters({ ...filters, stock });
       }
     },
@@ -89,15 +90,15 @@ const Sidebar = observer(() => {
         max !== Number.NEGATIVE_INFINITY
       ) {
         let arr = [min, max];
-        let price = [Math.min(...arr), Math.max(...arr)]
-        setFilters({ ...filters, price});
+        let price = [Math.min(...arr), Math.max(...arr)];
+        setFilters({ ...filters, price });
       }
     },
     [filters]
   );
 
   const getFilterFromQuery = () => {
-    let queryParams = Object.fromEntries([...searchParams]);    
+    let queryParams = Object.fromEntries([...searchParams]);
     let filtration: Filters = {};
     for (let key in queryParams) {
       if (key === "category" || key === "brand") {
@@ -106,19 +107,48 @@ const Sidebar = observer(() => {
         filtration[key as "price" | "stock"] = queryParams[key]
           .split("↕")
           .map((value) => +value);
-      } else {}
+      } else {
+      }
     }
     return filtration;
   };
 
-  useEffect(() => {
+  const resetFilters = () => {
+    const categoryFilters = document.getElementsByName(
+      "category"
+    ) as NodeListOf<HTMLInputElement>;
+    categoryFilters.forEach((item: HTMLInputElement) => {
+      item.checked = false;
+    });
+    const brandFilters = document.getElementsByName(
+      "brand"
+    ) as NodeListOf<HTMLInputElement>;
+    brandFilters.forEach((item: HTMLInputElement) => {
+      item.checked = false;
+    });
+    setFilters({
+      category: [],
+      brand: [],
+      stock: [],
+      price: [],
+    });
+    searchParams.delete("sort");
+  };
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+  };
+
     setParams();
     filterProducts(filters);
-    
   }, [filters]);
 
   return (
     <div className="sidebar">
+      <div className="sidebar_buttons">
+        <button onClick={resetFilters}>Reset</button>
+        <button onClick={copyLink}>Copy Link</button>
+      </div>
       <CategoryFilter
         categories={categories}
         onCategoryFilterChange={onCategoryFilterChange}
