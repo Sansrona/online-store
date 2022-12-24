@@ -9,11 +9,13 @@ class Products {
   products: storeProducts = [];
   filters: Filters | null = null;
   sortOption: SortTypes = "default" as SortTypes;
+  searchParam: string = "";
   constructor() {
     makeAutoObservable(this);
   }
 
   get allProducts() {
+    let productsArr = [...this.products];
     if (this.filters) {
       const filterNew = (
         criterias: { field: string; values: string[] | number[] | undefined }[]
@@ -63,11 +65,12 @@ class Products {
           });
         }
       }
-      const resArr = filterNew(newFilters);
-
+      let resArr = filterNew(newFilters);
+      resArr = this.searchProducts(this.searchParam, resArr);
       return this.sortProducts(resArr);
     }
-    return this.sortProducts(this.products);
+    productsArr = this.searchProducts(this.searchParam, productsArr)
+    return this.sortProducts(productsArr);
   }
 
   get categories() {
@@ -155,6 +158,26 @@ class Products {
       default:
         return products;
     }
+  };
+
+  setSearch = (search: string) => {
+    this.searchParam = search;
+  };
+
+  searchProducts = (param: string, products: Product[]): Product[] => {
+    products = products.filter((product) => {
+      let isFound = false;
+      for (let key in product) {
+        isFound = product[key as keyof Product].toString().toLowerCase().includes(param)
+          ? true
+          : false;
+        if (isFound) {
+          return true;
+        }
+      }
+      return false;
+    });
+    return products;
   };
 }
 

@@ -8,7 +8,7 @@ import Products from "./components/Products";
 
 const App: React.FC = observer(() => {
   const { productsStore } = useStore();
-  const { allProducts: products, setSort } = productsStore;
+  const { allProducts: products, setSort, setSearch } = productsStore;
 
   React.useEffect(() => {
     productsStore.getAllProducts();
@@ -17,7 +17,7 @@ const App: React.FC = observer(() => {
   return (
     <div className="container">
       <Sidebar />
-      <Products products={products} sort={setSort} />
+      <Products products={products} sort={setSort} setSearch={setSearch} />
     </div>
   );
 });

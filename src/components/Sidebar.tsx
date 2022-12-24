@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Filters } from "../api/types";
+import { Filters, SortTypes } from "../api/types";
 import { useStore } from "../providers/StoreProvider";
 import {
   BrandFilter,
@@ -27,6 +27,8 @@ const Sidebar = observer(() => {
     priceValues,
     currentStockValues,
     currentPriceValues,
+    setSearch,
+    setSort,
   } = productsStore;
 
   useEffect(() => {
@@ -132,13 +134,21 @@ const Sidebar = observer(() => {
       stock: [],
       price: [],
     });
+    const sortSelect = document.getElementById("sort") as HTMLSelectElement;
+    sortSelect.value = "default";
+    const search = document.getElementById("search") as HTMLInputElement;
+    search.value = "";
+    setSearch("");
+    setSort("" as SortTypes.default);
     searchParams.delete("sort");
+    searchParams.delete("search");
   };
 
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
   };
 
+  useEffect(() => {
     setParams();
     filterProducts(filters);
   }, [filters]);
