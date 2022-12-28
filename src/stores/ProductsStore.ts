@@ -5,11 +5,13 @@ import { Filters, Product, SortTypes } from "../api/types";
 
 type storeProducts = Product[] | [];
 
-class Products {
+class ProductsStore {
   products: storeProducts = [];
   filters: Filters | null = null;
   sortOption: SortTypes = "default" as SortTypes;
   searchParam: string = "";
+  product: Product | null = null;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -69,7 +71,7 @@ class Products {
       resArr = this.searchProducts(this.searchParam, resArr);
       return this.sortProducts(resArr);
     }
-    productsArr = this.searchProducts(this.searchParam, productsArr)
+    productsArr = this.searchProducts(this.searchParam, productsArr);
     return this.sortProducts(productsArr);
   }
 
@@ -113,7 +115,7 @@ class Products {
     ];
   }
 
-  getAllProducts() {
+  getAllProducts = () => {
     Api.getAllProducts()
       .then(
         action(({ products: data }) => {
@@ -121,7 +123,7 @@ class Products {
         })
       )
       .catch(action((err) => console.log(err)));
-  }
+  };
 
   filterProducts = (filterOptions: Filters) => {
     this.filters = filterOptions;
@@ -168,7 +170,10 @@ class Products {
     products = products.filter((product) => {
       let isFound = false;
       for (let key in product) {
-        isFound = product[key as keyof Product].toString().toLowerCase().includes(param)
+        isFound = product[key as keyof Product]
+          .toString()
+          .toLowerCase()
+          .includes(param)
           ? true
           : false;
         if (isFound) {
@@ -179,6 +184,14 @@ class Products {
     });
     return products;
   };
+
+  getProduct = (productId: string) => {
+    Api.getProductById(productId).then(
+      action((response) => {
+        this.product = response;
+      })
+    );
+  };
 }
 
-export default new Products();
+export default new ProductsStore();

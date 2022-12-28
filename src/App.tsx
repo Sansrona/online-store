@@ -8,10 +8,10 @@ import Products from "./components/Products";
 
 const App: React.FC = observer(() => {
   const { productsStore } = useStore();
-  const { allProducts: products, setSort, setSearch } = productsStore;
+  const { allProducts: products, setSort, setSearch, getAllProducts } = productsStore;
 
   React.useEffect(() => {
-    productsStore.getAllProducts();
+    getAllProducts();    
   }, []);
 
   return (

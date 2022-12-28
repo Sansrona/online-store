@@ -35,3 +35,9 @@ export enum SortTypes {
   discountDESC = "discount-DESC",
   default = ''
 }
+
+export type PromocodeType = {
+  name: string;
+  value: number;
+  title: string;
+};

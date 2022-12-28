@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { Product, SortTypes } from "../api/types";
 
 type ProductsPageType = {
@@ -83,9 +83,9 @@ const Products: React.FC<ProductsPageType> = ({
       <div className="products">
         {products.length ? (
           products.map((product) => (
-            <p key={product.id}>
+            <Link to={`product-details/${product.id}`} key={product.id}>
               {product.title}price{product.price}
-            </p>
+            </Link>
           ))
         ) : (
           <h2>NO such products</h2>

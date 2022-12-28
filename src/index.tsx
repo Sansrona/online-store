@@ -13,8 +13,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <StoreProvider>
-    <Header />
     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path="*" element={<ErrorPage />} />
         <Route path="/" element={<App />} />
