@@ -5,11 +5,16 @@ import { useStore } from "../../providers/StoreProvider";
 
 const Header = observer(() => {
   const { cartStore } = useStore();
-  const { productsCountInCart, productsPriceInCart, setCartFromStorage } =
-    cartStore;
+  const {
+    productsCountInCart,
+    productsPriceInCart,
+    setIdsFromStorage,
+    setCartFromStorage,
+  } = cartStore;
 
   React.useEffect(() => {
     setCartFromStorage();
+    setIdsFromStorage()
   }, []);
 
   return (

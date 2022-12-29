@@ -1,4 +1,4 @@
-export interface Product {
+export interface ProductType {
   id: number;
   title: string;
   description: string;
@@ -20,7 +20,7 @@ export type Filters = {
 };
 
 export interface Products {
-  products: Product[];
+  products: ProductType[];
   total: number;
   skip: number;
   limit: number;

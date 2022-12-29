@@ -1,16 +1,16 @@
 import { makeAutoObservable, action } from "mobx";
 
 import Api from "../api";
-import { Filters, Product, SortTypes } from "../api/types";
+import { Filters, ProductType, SortTypes } from "../api/types";
 
-type storeProducts = Product[] | [];
+type storeProducts = ProductType[] | [];
 
 class ProductsStore {
   products: storeProducts = [];
   filters: Filters | null = null;
   sortOption: SortTypes = "default" as SortTypes;
   searchParam: string = "";
-  product: Product | null = null;
+  product: ProductType | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -23,7 +23,7 @@ class ProductsStore {
         criterias: { field: string; values: string[] | number[] | undefined }[]
       ) => {
         let matches = [];
-        const matchFilters = (item: Product) => {
+        const matchFilters = (item: ProductType) => {
           let counter = 0;
           for (let crit of criterias) {
             if (crit["field"] === "category" || crit["field"] === "brand") {
@@ -133,7 +133,7 @@ class ProductsStore {
     this.sortOption = sortOption;
   };
 
-  sortProducts = (products: Product[]): Product[] => {
+  sortProducts = (products: ProductType[]): ProductType[] => {
     switch (this.sortOption) {
       case SortTypes.priceASC: {
         return products.sort((a, b) => a.price - b.price);
@@ -166,11 +166,11 @@ class ProductsStore {
     this.searchParam = search;
   };
 
-  searchProducts = (param: string, products: Product[]): Product[] => {
+  searchProducts = (param: string, products: ProductType[]): ProductType[] => {
     products = products.filter((product) => {
       let isFound = false;
       for (let key in product) {
-        isFound = product[key as keyof Product]
+        isFound = product[key as keyof ProductType]
           .toString()
           .toLowerCase()
           .includes(param)

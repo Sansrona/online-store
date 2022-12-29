@@ -1,8 +1,8 @@
 import { makeAutoObservable } from "mobx";
-import { Product, PromocodeType } from "../api/types";
+import { ProductType, PromocodeType } from "../api/types";
 
 type ProductInCartType = {
-  product: Product;
+  product: ProductType;
   count: number;
 };
 
@@ -49,7 +49,12 @@ class CartStore {
     if (cart) this.cart = JSON.parse(cart);
   };
 
-  addProductToCart = (product: Product) => {
+  setIdsFromStorage = () => {
+    let ids = localStorage.getItem("ids");
+    if (ids) this.ids = JSON.parse(ids);
+  };
+
+  addProductToCart = (product: ProductType) => {
     let newItem: ProductInCartType = {
       product,
       count: 1,
@@ -62,12 +67,14 @@ class CartStore {
 
   removeProductFromCart = (productId: number) => {
     this.cart = this.cart.filter((p) => p.product.id !== productId);
+    this.ids = this.ids.filter((p) => p !== productId);
     localStorage.setItem("cart", JSON.stringify(this.cart));
+    localStorage.setItem("ids", JSON.stringify(this.ids));
   };
 
   incrementProductCount = (productId: number) => {
     let product = this.cart.find((p) => p.product.id === productId);
-    if (product && product.count <= product.product.stock) {
+    if (product && product.count < product.product.stock) {
       product.count += 1;
     }
     localStorage.setItem("cart", JSON.stringify(this.cart));

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { Product, SortTypes } from "../api/types";
+import { ProductType, SortTypes } from "../api/types";
+import Product from "./Product";
 
 type ProductsPageType = {
-  products: Product[];
+  products: ProductType[];
   sort: (sortOption: SortTypes) => void;
   setSearch: (searchParam: string) => void;
 };
@@ -83,9 +84,7 @@ const Products: React.FC<ProductsPageType> = ({
       <div className="products">
         {products.length ? (
           products.map((product) => (
-            <Link to={`product-details/${product.id}`} key={product.id}>
-              {product.title}price{product.price}
-            </Link>
+            <Product key={product.id} product={product}/>
           ))
         ) : (
           <h2>NO such products</h2>

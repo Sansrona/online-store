@@ -6,18 +6,18 @@ import { useStore } from "../../providers/StoreProvider";
 const ProductDetails = observer(() => {
   const { productId } = useParams();
   const [isAddedToCart, setIsAddedToCart] = useState(false);
-  let ids = JSON.parse(localStorage.getItem("ids") || "");
+  let idsString = localStorage.getItem("ids") || "null";
+  let ids = JSON.parse(idsString);
   const { productsStore, cartStore } = useStore();
   const { getProduct, product } = productsStore;
-  const { addProductToCart, removeProductFromCart, cart, itemsInCartIds } =
-    cartStore;
+  const { addProductToCart, removeProductFromCart } = cartStore;
 
   useEffect(() => {
     if (productId) {
       getProduct(productId);
       setIsAddedToCart(ids?.includes(+productId));
     }
-    
+    console.log(product);
   }, []);
 
   const onAddProduct = () => {
@@ -32,20 +32,26 @@ const ProductDetails = observer(() => {
 
   return (
     <div>
-      <div className="breadcrumbs">
-        <Link to="/">Store</Link>
-        <p> &gt; {product?.category}&gt;</p>
-        <p>{product?.brand}&gt;</p>
-        <p>{product?.title}</p>
-      </div>
-      <div>{product?.title}</div>
-      <div className="add_button">
-        {!isAddedToCart ? (
-          <button onClick={onAddProduct}>Add to Cart</button>
-        ) : (
-          <button onClick={onRemoveProduct}>Remove from Cart</button>
-        )}
-      </div>
+      {product ? (
+        <div>
+          <div className="breadcrumbs">
+            <Link to="/">Store</Link>
+            <p> &gt; {product?.category}&gt;</p>
+            <p>{product?.brand}&gt;</p>
+            <p>{product?.title}</p>
+          </div>
+          <div>{product?.title}</div>
+          <div className="add_button">
+            {!isAddedToCart ? (
+              <button onClick={onAddProduct}>Add to Cart</button>
+            ) : (
+              <button onClick={onRemoveProduct}>Remove from Cart</button>
+            )}
+          </div>
+        </div>
+      ) : (
+        <p>No such product</p>
+      )}
     </div>
   );
 });
