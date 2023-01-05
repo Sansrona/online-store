@@ -1,11 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import {Routes, Route, BrowserRouter} from "react-router-dom";
 
 import App from "./App";
-import { Cart, ErrorPage, Header, Footer, ProductDetails } from "./views/";
-import "./styles/normalize.css";
-import "./index.scss";
+import {Cart, ErrorPage, Header, Footer, ProductDetails} from "./views/";
+import "./index.css";
 import StoreProvider from "./providers/StoreProvider";
 
 const root = ReactDOM.createRoot(
@@ -13,16 +12,18 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <StoreProvider>
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="*" element={<ErrorPage />} />
-        <Route path="/" element={<App />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="product-details/:productId" element={<ProductDetails />} />
-      </Routes>
-    </BrowserRouter>
-    <Footer />
+    <div className="max-w-screen-2xl mx-auto">
+      <BrowserRouter>
+        <Header/>
+        <Routes>
+          <Route path="*" element={<ErrorPage/>}/>
+          <Route path="/" element={<App/>}/>
+          <Route path="/cart" element={<Cart/>}/>
+          <Route path="product-details/:productId" element={<ProductDetails/>}/>
+        </Routes>
+      </BrowserRouter>
+      <Footer/>
+    </div>
   </StoreProvider>
 );
 

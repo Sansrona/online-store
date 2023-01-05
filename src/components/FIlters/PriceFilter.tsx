@@ -7,7 +7,6 @@ import {
   useRef,
 } from "react";
 import classnames from "classnames";
-import "./PriceFilter.scss";
 
 interface MultiRangeSliderProps {
   min: number;
@@ -17,17 +16,17 @@ interface MultiRangeSliderProps {
 }
 
 const PriceFilter: FC<MultiRangeSliderProps> = ({
-  min,
-  max,
-  onChange,
-  currentPriceValues,
-}) => {
+                                                  min,
+                                                  max,
+                                                  onChange,
+                                                  currentPriceValues,
+                                                }) => {
   const [minVal, setMinVal] = useState(currentPriceValues[0]);
   const [maxVal, setMaxVal] = useState(currentPriceValues[1]);
   const minValRef = useRef<HTMLInputElement>(null);
   const maxValRef = useRef<HTMLInputElement>(null);
   const range = useRef<HTMLDivElement>(null);
-  
+
   // Convert to percentage
   const getPercent = useCallback(
     (value: number) => Math.round(((value - min) / (max - min)) * 100),
@@ -70,7 +69,7 @@ const PriceFilter: FC<MultiRangeSliderProps> = ({
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
           const value = +event.target.value;
           setMinVal(value);
-          onChange({ min: minVal, max: maxVal });
+          onChange({min: minVal, max: maxVal});
         }}
         className={classnames("thumb thumb--zindex-3", {
           "thumb--zindex-5": minVal > max - 100,
@@ -85,7 +84,7 @@ const PriceFilter: FC<MultiRangeSliderProps> = ({
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
           const value = +event.target.value;
           setMaxVal(value);
-          onChange({ min: minVal, max: maxVal });
+          onChange({min: minVal, max: maxVal});
           // event.target.value = value.toString();
         }}
         className="thumb thumb--zindex-4"

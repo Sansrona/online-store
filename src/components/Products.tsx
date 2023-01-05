@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useSearchParams, Link } from "react-router-dom";
-import { ProductType, SortTypes } from "../api/types";
+import React, {useState, useEffect} from "react";
+import {useSearchParams, Link} from "react-router-dom";
+import {ProductType, SortTypes} from "../api/types";
 import Product from "./Product";
 
 type ProductsPageType = {
@@ -19,10 +19,10 @@ const sortArr = [
 ];
 
 const Products: React.FC<ProductsPageType> = ({
-  products,
-  sort: onSortChange,
-  setSearch,
-}) => {
+                                                products,
+                                                sort: onSortChange,
+                                                setSearch,
+                                              }) => {
   let [searchParams, setSearchParams] = useSearchParams();
   const [sortOption, setSortOption] = useState(
     searchParams.get("sort") || "default"
@@ -52,8 +52,8 @@ const Products: React.FC<ProductsPageType> = ({
   };
 
   return (
-    <div className="main">
-      <div className="main__header">
+    <div className="border border-slate-400 flex-grow-1 max-w-full flex-1 py-4 px-8">
+      <div className="">
         <div className="sort">
           <select
             name="sort"
@@ -71,7 +71,7 @@ const Products: React.FC<ProductsPageType> = ({
             ))}
           </select>
         </div>
-        <div className="seacrh">
+        <div className="">
           <input
             type="text"
             name="search"
@@ -81,7 +81,7 @@ const Products: React.FC<ProductsPageType> = ({
           />
         </div>
       </div>
-      <div className="products">
+      <div className="products flex flex-wrap justify-between">
         {products.length ? (
           products.map((product) => (
             <Product key={product.id} product={product}/>
