@@ -17,7 +17,6 @@ const ProductDetails = observer(() => {
       getProduct(productId);
       setIsAddedToCart(ids?.includes(+productId));
     }
-    console.log(product);
   }, []);
 
   const onAddProduct = () => {

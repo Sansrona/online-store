@@ -14,6 +14,7 @@ const BrandFilter: React.FC<BrandFilterTypes> = ({
   const [brandParams, setBrandParams] = React.useState<string[]>([]);
   React.useEffect(() => {
     let brandParams = params.get("brand")?.split("↕");
+    
     if (brandParams?.length) {
       setBrandParams(brandParams);
     }
