@@ -36,7 +36,7 @@ const Product: React.FC<ProductComponentTypes> = observer(({product}) => {
   return (
     <div className="rounded-md shadow-md border border-slate-300 flex flex-col max-w-[240px] w-full aspect-square"
          key={product.id}>
-      <img className="rounded-t-md w-full object-fill aspect-square" loading="lazy" src={product.images[0]} alt=""/>
+      <img className="rounded-t-md w-full object-cover aspect-square" loading="lazy" src={product.images[0]} alt=""/>
       <div className="flex-1 p-4 flex flex-col justify-between ">
         <p
           className="font-medium overflow-ellipsis">{product.title.length > 22 ? `${product.title.substring(0, 22)}...` : product.title}

@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <StoreProvider>
-    <div className="max-w-screen-2xl mx-auto">
+    <div className="max-w-screen-2xl mx-auto flex flex-col min-h-screen">
       <BrowserRouter>
         <Header/>
         <Routes>
