@@ -19,20 +19,22 @@ const BrandFilter: React.FC<BrandFilterTypes> = ({
     }
   }, []);
   return (
-    <form className="border border-amber-600 p-2">
-      <p className="text-center border border-amber-800">Brand</p>
-      <ul className="flex flex-col max-h-52 overflow-scroll">
+    <form className="p-2">
+      <p className="uppercase font-medium">Brand</p>
+      <ul className="pt-2 flex flex-col max-h-52 overflow-scroll">
         {brands?.map((brand) => {
           return (
-            <li className="flex items-center gap-2" key={brand}>
+            <li className="flex items-center gap-2 hover:bg-slate-200" key={brand}>
               <input
+                className="accent-slate-200 transition-colors w-3.5 h-3.5 cursor-pointer"
                 type="checkbox"
-                name="category"
+                name="brand"
+                id={brand}
                 defaultChecked={brandParams.includes(brand.toLowerCase())}
                 value={brand.toLowerCase()}
                 onChange={onBrandFilterChange}
               />
-              <label htmlFor={brand}>{brand}</label>
+              <label className="capitalize cursor-pointer" htmlFor={brand}>{brand}</label>
             </li>
           );
         })}

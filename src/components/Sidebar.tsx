@@ -154,15 +154,23 @@ const Sidebar = observer(() => {
   }, []);
 
   return (
-    <div className="bg-slate-200 max-w-sm flex flex-col py-4 px-4 flex-grow">
+    <div className="shadow-custom rounded-2xl max-w-sm flex flex-col h-fit py-4 px-4 flex-grow">
       <div className="flex gap-8 justify-center pb-4">
-        <button className="border border-slate-500 rounded-md p-2 text-sm" onClick={resetFilters}>Reset Filters</button>
-        <button className="border border-slate-500 rounded-md p-2 text-sm" onClick={copyLink}>Copy Link</button>
+        <button
+          className="bg-red-300 rounded-md p-2 text-sm uppercase font-medium"
+          onClick={resetFilters}>Reset
+          Filters
+        </button>
+        <button className="bg-blue-200 rounded-md p-2 text-sm uppercase font-medium"
+                onClick={copyLink}>Copy
+          Link
+        </button>
       </div>
       <CategoryFilter
         categories={categories}
         onCategoryFilterChange={onCategoryFilterChange}
       />
+      <hr/>
       <BrandFilter brands={brands} onBrandFilterChange={onBrandFilterChange}/>
       {priceValues[0] !== Number.POSITIVE_INFINITY && (
         <PriceFilter

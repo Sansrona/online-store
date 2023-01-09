@@ -20,20 +20,22 @@ const CategoryFilter: React.FC<CategoryFilterTypes> = ({
   }, []);
 
   return (
-    <form className="border border-amber-600 p-2">
-      <p className="text-center border border-amber-800">Category</p>
-      <ul className="flex flex-col max-h-52 overflow-scroll">
+    <form className="p-2">
+      <p className="uppercase font-medium">Category</p>
+      <ul className="pt-2 flex flex-col max-h-52 overflow-scroll">
         {categories?.map((category) => {
           return (
-            <li className="flex items-center gap-2" key={category}>
+            <li className="flex items-center gap-2 hover:bg-slate-200" key={category}>
               <input
+                className="accent-slate-200 transition-colors w-3.5 h-3.5 cursor-pointer"
                 type="checkbox"
                 name="category"
+                id={category}
                 defaultChecked={categoryParams.includes(category.toLowerCase())}
                 value={category.toLowerCase()}
                 onChange={onCategoryFilterChange}
               />
-              <label htmlFor={category}>{category}</label>
+              <label className="capitalize cursor-pointer" htmlFor={category}>{category}</label>
             </li>
           );
         })}

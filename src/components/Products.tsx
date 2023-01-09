@@ -52,7 +52,8 @@ const Products: React.FC<ProductsPageType> = ({
   };
 
   return (
-    <div className="border border-slate-400 flex-grow-1 max-w-full flex-1 py-4 px-8">
+    <div
+      className="rounded rounded-2xl shadow-custom border-slate-400 flex-grow-1 max-w-full flex-1 py-4 px-8">
       <div className="">
         <div className="sort">
           <select
