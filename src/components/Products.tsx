@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {useSearchParams, Link} from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
 import {ProductType, SortTypes} from "../api/types";
 import Product from "./Product";
 
@@ -81,7 +81,7 @@ const Products: React.FC<ProductsPageType> = ({
           />
         </div>
       </div>
-      <div className="products flex flex-wrap justify-between">
+      <div className="products flex flex-wrap justify-center gap-6">
         {products.length ? (
           products.map((product) => (
             <Product key={product.id} product={product}/>
