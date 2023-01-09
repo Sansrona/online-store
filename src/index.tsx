@@ -1,28 +1,32 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App from "./App";
-import { Cart, ErrorPage, Header, Footer, ProductDetails } from "./views/";
 import "./styles/normalize.css";
 import "./index.scss";
 import StoreProvider from "./providers/StoreProvider";
+import { Cart, ErrorPage, ProductDetails, Root } from "./views";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    errorElement: <ErrorPage />,
+    children: [
+      { index: true, element: <Root /> },
+      { path: "cart", element: <Cart /> },
+      { path: "product-details/:productId", element: <ProductDetails /> },
+    ],
+  },
+]);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <StoreProvider>
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="*" element={<ErrorPage />} />
-        <Route path="/" element={<App />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="product-details/:productId" element={<ProductDetails />} />
-      </Routes>
-    </BrowserRouter>
-    <Footer />
+    <RouterProvider router={router} />
   </StoreProvider>
 );
 
