@@ -1,25 +1,24 @@
 import React from "react";
-import { observer } from "mobx-react-lite";
-import { Outlet } from "react-router-dom";
+import {observer} from "mobx-react-lite";
+import {Outlet} from "react-router-dom";
 
-import "./App.scss";
-import { Header, Footer } from "./views/";
+import {Header, Footer} from "./views/";
 
-import { useStore } from "./providers/StoreProvider";
+import {useStore} from "./providers/StoreProvider";
 
 const App: React.FC = observer(() => {
-  const { productsStore } = useStore();
-  const { getAllProducts } = productsStore;
+  const {productsStore} = useStore();
+  const {getAllProducts} = productsStore;
 
   React.useEffect(() => {
     getAllProducts();
   }, []);
 
   return (
-    <div className="container">
-      <Header />
-      <Outlet />
-      <Footer />
+    <div className="max-w-screen-2xl mx-auto min-h-screen flex flex-col">
+      <Header/>
+      <Outlet/>
+      <Footer/>
     </div>
   );
 });
