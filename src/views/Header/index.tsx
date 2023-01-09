@@ -20,7 +20,7 @@ const Header = observer(() => {
 
   return (
     <header className="flex items-center justify-between pt-4 pb-8">
-      <h1 className="font-bold text-xl">Online Shop</h1>
+      <Link to="/"><h1 className="font-bold text-xl">Online Shop</h1></Link>
       <div className="flex gap-6">
         <p className="font-medium">Items in cart: {productsCountInCart}</p>
         <p className="font-medium">Cart total: {productsPriceInCart}</p>

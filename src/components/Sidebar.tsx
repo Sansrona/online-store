@@ -151,7 +151,8 @@ const Sidebar = observer(() => {
   useEffect(() => {
     setParams();
     filterProducts(filters);
-  }, []);
+  }, [filters]);
+
 
   return (
     <div className="shadow-custom rounded-2xl max-w-sm flex flex-col h-fit py-4 px-4 flex-grow">
@@ -172,6 +173,7 @@ const Sidebar = observer(() => {
       />
       <hr/>
       <BrandFilter brands={brands} onBrandFilterChange={onBrandFilterChange}/>
+      <hr/>
       {priceValues[0] !== Number.POSITIVE_INFINITY && (
         <PriceFilter
           min={priceValues[0]}
@@ -180,6 +182,7 @@ const Sidebar = observer(() => {
           onChange={onPriceFilterChange}
         />
       )}
+      <hr/>
       {stockValues[0] !== Number.POSITIVE_INFINITY && (
         <StockFilter
           min={stockValues[0]}
