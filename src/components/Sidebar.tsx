@@ -1,8 +1,8 @@
-import { observer } from "mobx-react-lite";
-import React, { useCallback, useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import { Filters, SortTypes } from "../api/types";
-import { useStore } from "../providers/StoreProvider";
+import {observer} from "mobx-react-lite";
+import React, {useCallback, useState, useEffect} from "react";
+import {useSearchParams} from "react-router-dom";
+import {Filters, SortTypes} from "../api/types";
+import {useStore} from "../providers/StoreProvider";
 import {
   BrandFilter,
   CategoryFilter,
@@ -18,7 +18,7 @@ const Sidebar = observer(() => {
     stock: [],
     price: [],
   });
-  const { productsStore } = useStore();
+  const {productsStore} = useStore();
   const {
     categories,
     brands,
@@ -40,10 +40,10 @@ const Sidebar = observer(() => {
     let categoryValues = filters.category || [];
     if (e.target.checked) {
       categoryValues.push(e.target.value);
-      setFilters({ ...filters, category: categoryValues });
+      setFilters({...filters, category: categoryValues});
     } else {
       let newCategories = categoryValues.filter((x) => x !== e.target.value);
-      setFilters({ ...filters, category: newCategories });
+      setFilters({...filters, category: newCategories});
     }
   };
 
@@ -51,10 +51,10 @@ const Sidebar = observer(() => {
     let brandValues = filters.brand || [];
     if (e.target.checked) {
       brandValues.push(e.target.value);
-      setFilters({ ...filters, brand: brandValues });
+      setFilters({...filters, brand: brandValues});
     } else {
       let newBrands = brandValues.filter((x) => x !== e.target.value);
-      setFilters({ ...filters, brand: newBrands });
+      setFilters({...filters, brand: newBrands});
     }
   };
 
@@ -73,27 +73,27 @@ const Sidebar = observer(() => {
   };
 
   const onStockFilterChange = useCallback(
-    ({ min, max }: { min: number; max: number }) => {
+    ({min, max}: { min: number; max: number }) => {
       if (
         min !== Number.POSITIVE_INFINITY &&
         max !== Number.NEGATIVE_INFINITY
       ) {
         let arr = [min, max];
         let stock = [Math.min(...arr), Math.max(...arr)];
-        setFilters({ ...filters, stock });
+        setFilters({...filters, stock});
       }
     },
     [filters]
   );
   const onPriceFilterChange = useCallback(
-    ({ min, max }: { min: number; max: number }) => {
+    ({min, max}: { min: number; max: number }) => {
       if (
         min !== Number.POSITIVE_INFINITY &&
         max !== Number.NEGATIVE_INFINITY
       ) {
         let arr = [min, max];
         let price = [Math.min(...arr), Math.max(...arr)];
-        setFilters({ ...filters, price });
+        setFilters({...filters, price});
       }
     },
     [filters]
@@ -153,17 +153,27 @@ const Sidebar = observer(() => {
     filterProducts(filters);
   }, [filters]);
 
+
   return (
-    <div className="sidebar">
-      <div className="sidebar_buttons">
-        <button onClick={resetFilters}>Reset</button>
-        <button onClick={copyLink}>Copy Link</button>
+    <div className="shadow-custom rounded-2xl max-w-sm flex flex-col h-fit py-4 px-4 flex-grow">
+      <div className="flex gap-8 justify-center pb-4">
+        <button
+          className="bg-red-300 rounded-md p-2 text-sm uppercase font-medium"
+          onClick={resetFilters}>Reset
+          Filters
+        </button>
+        <button className="bg-blue-200 rounded-md p-2 text-sm uppercase font-medium"
+                onClick={copyLink}>Copy
+          Link
+        </button>
       </div>
       <CategoryFilter
         categories={categories}
         onCategoryFilterChange={onCategoryFilterChange}
       />
-      <BrandFilter brands={brands} onBrandFilterChange={onBrandFilterChange} />
+      <hr/>
+      <BrandFilter brands={brands} onBrandFilterChange={onBrandFilterChange}/>
+      <hr/>
       {priceValues[0] !== Number.POSITIVE_INFINITY && (
         <PriceFilter
           min={priceValues[0]}
@@ -172,6 +182,7 @@ const Sidebar = observer(() => {
           onChange={onPriceFilterChange}
         />
       )}
+      <hr/>
       {stockValues[0] !== Number.POSITIVE_INFINITY && (
         <StockFilter
           min={stockValues[0]}

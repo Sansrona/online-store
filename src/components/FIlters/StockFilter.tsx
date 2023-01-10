@@ -1,4 +1,4 @@
-import {
+import React, {
   ChangeEvent,
   FC,
   useCallback,
@@ -7,7 +7,6 @@ import {
   useRef,
 } from "react";
 import classnames from "classnames";
-import "./StockFilter.scss";
 
 interface MultiRangeSliderProps {
   min: number;
@@ -17,17 +16,17 @@ interface MultiRangeSliderProps {
 }
 
 const StockFilter: FC<MultiRangeSliderProps> = ({
-  min,
-  max,
-  onChange,
-  currentStockValues,
-}) => {
+                                                  min,
+                                                  max,
+                                                  onChange,
+                                                  currentStockValues,
+                                                }) => {
   const [minVal, setMinVal] = useState(currentStockValues[0]);
   const [maxVal, setMaxVal] = useState(currentStockValues[1]);
   const minValRef = useRef<HTMLInputElement>(null);
   const maxValRef = useRef<HTMLInputElement>(null);
   const range = useRef<HTMLDivElement>(null);
- 
+
   // Convert to percentage
   const getPercent = useCallback(
     (value: number) => Math.round(((value - min) / (max - min)) * 100),
@@ -59,40 +58,43 @@ const StockFilter: FC<MultiRangeSliderProps> = ({
   }, [maxVal, getPercent]);
 
   return (
-    <div className="container__stock">
-      <input
-        type="range"
-        min={min}
-        max={max}
-        value={currentStockValues[0]}
-        ref={minValRef}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          const value = +event.target.value;
-          setMinVal(value);
-          onChange({ min: minVal, max: maxVal });
-        }}
-        className={classnames("thumb thumb--zindex-3", {
-          "thumb--zindex-5": minVal > max - 100,
-        })}
-      />
-      <input
-        type="range"
-        min={min}
-        max={max}
-        value={currentStockValues[1]}
-        ref={maxValRef}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          const value = +event.target.value;
-          setMaxVal(value);
-          onChange({ min: minVal, max: maxVal });
-        }}
-        className="thumb thumb--zindex-4"
-      />
+    <div className="p-2">
+      <p className="uppercase font-medium">Stock</p>
+      <div className="pt-2 flex justify-start">
+        <input
+          type="range"
+          min={min}
+          max={max}
+          value={currentStockValues[0]}
+          ref={minValRef}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            const value = +event.target.value;
+            setMinVal(value);
+            onChange({min: minVal, max: maxVal});
+          }}
+          className={`${classnames("thumb thumb--zindex-3", {
+            "thumb--zindex-5": minVal > max - 100,
+          })} flex-1`}
+        />
+        <input
+          type="range"
+          min={min}
+          max={max}
+          value={currentStockValues[1]}
+          ref={maxValRef}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            const value = +event.target.value;
+            setMaxVal(value);
+            onChange({min: minVal, max: maxVal});
+          }}
+          className="thumb thumb--zindex-4 flex-1"
+        />
+      </div>
 
       <div className="slider">
         <div className="slider__track"></div>
         <div ref={range} className="slider__range"></div>
-        <div>
+        <div className="flex justify-between">
           <div className="slider__left-value">
             {currentStockValues[0] !== Number.POSITIVE_INFINITY ? (
               currentStockValues[0]

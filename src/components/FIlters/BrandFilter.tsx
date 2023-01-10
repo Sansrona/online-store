@@ -1,5 +1,5 @@
 import React from "react";
-import { useSearchParams } from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
 
 type BrandFilterTypes = {
   brands: string[];
@@ -7,9 +7,9 @@ type BrandFilterTypes = {
 };
 
 const BrandFilter: React.FC<BrandFilterTypes> = ({
-  brands,
-  onBrandFilterChange,
-}) => {
+                                                   brands,
+                                                   onBrandFilterChange,
+                                                 }) => {
   const [params] = useSearchParams();
   const [brandParams, setBrandParams] = React.useState<string[]>([]);
   React.useEffect(() => {
@@ -20,23 +20,26 @@ const BrandFilter: React.FC<BrandFilterTypes> = ({
     }
   }, []);
   return (
-    <form>
-      <p>Brand</p>
-      {brands?.map((brand) => {
-        return (
-          <div key={brand}>
-            <input
-              type="checkbox"
-              name="brand"
-              id={brand}
-              defaultChecked={brandParams.includes(brand.toLowerCase())}
-              value={brand.toLowerCase()}
-              onChange={onBrandFilterChange}
-            />
-            <label htmlFor={brand}>{brand}</label>
-          </div>
-        );
-      })}
+    <form className="p-2">
+      <p className="uppercase font-medium">Brand</p>
+      <ul className="pt-2 flex flex-col max-h-52 overflow-scroll">
+        {brands?.map((brand) => {
+          return (
+            <li className="flex items-center gap-2 hover:bg-slate-200" key={brand}>
+              <input
+                className="accent-slate-200 transition-colors w-3.5 h-3.5 cursor-pointer"
+                type="checkbox"
+                name="brand"
+                id={brand}
+                defaultChecked={brandParams.includes(brand.toLowerCase())}
+                value={brand.toLowerCase()}
+                onChange={onBrandFilterChange}
+              />
+              <label className="capitalize cursor-pointer" htmlFor={brand}>{brand}</label>
+            </li>
+          );
+        })}
+      </ul>
     </form>
   );
 };
